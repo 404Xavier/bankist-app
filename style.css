@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family:  sans-serif;
   color: #444;
   background-color: #f3f3f3;
   height: 100vh;
@@ -68,12 +68,15 @@ nav {
 }
 
 .login__btn {
-  padding: 10px 20px;
-  border: none;
+  padding: 15px 30px;
+  border: 1px solid #ffb003;
+  /* height: 8px; */
+  display: inline-block;
   background: none;
-  font-size: 2.2rem;
-  color: inherit;
+  font-size: 1.25rem;
+  color: #ffb003;
   cursor: pointer;
+  border-radius: 30px;
   transition: all 0.3s;
 }
 

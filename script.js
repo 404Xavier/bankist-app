@@ -62,3 +62,27 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 /**Deleted all the projects before in the script for array methods */
+
+//1. Displaying the movements inside the movements Conatiner
+
+const displayMovements = ( movements )=>  {
+  //reset the containerMovements
+  containerMovements.innerHTML = '';
+  movements.forEach((mov, idx) => {
+    // console.log( mov, idx );
+    //set the movement type to depoit or withdrawal
+    const movType = mov > 0 ? 'deposit' : 'withdrawal';
+    //create the movemet ro
+    const movementRowHTML = `
+      <div class="movements__row">
+            <div class="movements__type movements__type--${movType}">${idx + 1} ${movType}</div>
+            <div class="movements__value">${Math.abs(mov)}</div>
+      </div>
+    `;
+
+    containerMovements.insertAdjacentHTML("afterbegin", movementRowHTML);
+  });
+};
+
+//Use the function on the first account
+displayMovements( account1.movements );
