@@ -85,8 +85,19 @@ const displayMovements = ( movements )=>  {
 };
 
 //Use the function on the first account
-displayMovements( account1.movements );
+displayMovements( account2.movements );
 
+//Create a function to calculate and display the results to the dom
+const calcDisplayBalance = ( acc ) => {
+  //calculate the balance remain in the account
+  const balanceToDisplay = acc.reduce( ( acc, curr ) => acc + curr );
+
+  //render the balance to the DOM
+  labelBalance.innerText = `${ balanceToDisplay } EUR€`;
+}
+
+//call the function using account1 movements
+calcDisplayBalance( account2.movements );
 //creating a user name initials from the name
 //using the map method
 
@@ -94,7 +105,7 @@ const createUserName = ( accs ) => {
   //loop over each of the account and add the userName property to the account, in this case the four account, userName as initials of the acc.Owner
   accs.forEach( ( acc ) => {
     acc.userName = acc.owner.toLocaleLowerCase().split( ' ' ).map( name => name[ 0 ] ).join( '' );
-    console.log(acc);
+    // console.log(acc);
   })
 }
 
@@ -105,3 +116,7 @@ createUserName( accounts );
 //creating user name initials
 // const userName = account1.owner.toLocaleLowerCase().split(' ').map(name => name[0]).join('');
 // console.log(userName);
+
+
+
+
