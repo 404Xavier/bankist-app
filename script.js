@@ -86,3 +86,22 @@ const displayMovements = ( movements )=>  {
 
 //Use the function on the first account
 displayMovements( account1.movements );
+
+//creating a user name initials from the name
+//using the map method
+
+const createUserName = ( accs ) => {
+  //loop over each of the account and add the userName property to the account, in this case the four account, userName as initials of the acc.Owner
+  accs.forEach( ( acc ) => {
+    acc.userName = acc.owner.toLocaleLowerCase().split( ' ' ).map( name => name[ 0 ] ).join( '' );
+    console.log(acc);
+  })
+}
+
+//pass in the accounts as the argument
+createUserName( accounts );
+
+
+//creating user name initials
+// const userName = account1.owner.toLocaleLowerCase().split(' ').map(name => name[0]).join('');
+// console.log(userName);
