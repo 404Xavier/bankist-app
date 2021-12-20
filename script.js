@@ -178,3 +178,32 @@ const calcAverageHumanAge = ( juliasArr, katesArr ) => {
 
 //call the function
 console.log(calcAverageHumanAge( [ 3, 5, 2, 12, 7 ], [ 4, 1, 15, 8, 3 ] ));
+
+
+//second way of implementing the same function
+const calcAverageHumanAgeVersionTwo = ( juliasArr, katesArr ) => {
+  //step 1
+  const juliasArrCorrcted = [ ...juliasArr ];
+  juliasArrCorrcted.pop(); //removes the last
+  juliasArrCorrcted.shift();//removes the first arr element
+  //step 2
+ const allDogsData = [ ...juliasArrCorrcted, ...katesArr ];
+ const averageAdultDogAge = allDogsData.map( age => {
+   if ( age <= 2 ) {
+     // console.log(age);
+     return age * 2;
+   } else {
+     // console.log(age);
+     return age * 4;
+   }
+ } )
+   .filter( dogAge => dogAge >= 18 )
+   .reduce( ( acc, currAge, idx, arr ) => {
+     console.log(arr);
+     return acc + currAge / arr.length;
+   }, 0 ) 
+
+  return averageAdultDogAge;
+};
+
+console.log(calcAverageHumanAgeVersionTwo( [ 3, 5, 2, 12, 7 ], [ 4, 1, 15, 8, 3 ] ));
