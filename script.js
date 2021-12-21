@@ -6,7 +6,7 @@
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'John Ndegwa',
   movements: [ 200, 450, -400, 3000, -650, -130, 70, 1300 ],
   interestRate: 1.2, // %
   pin: 1111,
@@ -84,8 +84,7 @@ const displayMovements = ( movements ) => {
   } );
 };
 
-//Use the function on the first account
-displayMovements( account2.movements );
+
 
 //Create a function to calculate and display the results to the dom
 const calcDisplayBalance = ( acc ) => {
@@ -96,42 +95,39 @@ const calcDisplayBalance = ( acc ) => {
   labelBalance.innerText = `${ balanceToDisplay } EUR€`;
 };
 
-//call the function using account1 movements
-calcDisplayBalance( account2.movements );
 
 
 //Calculating the value to dsiplay, totalwithdrawals, totalDeposits, and the interest earned on the deposit
 //chaining arrayHelper methods, which do not mutate the original array
 
-const calcDisplaySummary = ( movements ) => {
-  const totalDeposits = movements.filter( mov => mov > 0 )
+const calcDisplaySummary = ( accountToDisplay ) => {
+  const totalDeposits = accountToDisplay.movements.filter( mov => mov > 0 )
     .map( mov => mov )
     .reduce( ( accum, currMov ) => accum + currMov );
-  
-    // console.log( totalDeposits );
+
+  // console.log( totalDeposits );
   //calculate the totalWithdrawals
-  const totalWithdrawals = movements.filter( mov => mov < 0 )
+  const totalWithdrawals =  accountToDisplay.movements.filter( mov => mov < 0 )
     .map( mov => mov )
     .reduce( ( accum, currMov ) => accum + currMov );
   // console.log(totalWithdrawals);
-  
+
   //calculate the interest earned from the deposit, 1.2% for every depodit
-  const totalInterestEarned = movements.filter( mov => mov > 0 )
-    .map( mov => (mov * 1.2) / 100 )
+  const totalInterestEarned =  accountToDisplay.movements.filter( mov => mov > 0 )
+    .map( mov => ( mov * accountToDisplay.interestRate ) / 100 )
     .filter( interestEarned => interestEarned >= 1 )
     .map( interest => interest )
     .reduce( ( accum, currInterest ) => accum + currInterest );
   // console.log( totalInterestEarned );
-  
+
   //add the values to the DOM
   labelSumIn.innerText = `${ totalDeposits }€`;
-  labelSumOut.innerText = `${ Math.abs(totalWithdrawals) }€`;
+  labelSumOut.innerText = `${ Math.abs( totalWithdrawals ) }€`;
   labelSumInterest.innerText = `${ totalInterestEarned }€`;
 
 };
 
-//call the function with account 1 movemnets
-calcDisplaySummary( account1.movements );
+
 
 
 
@@ -158,3 +154,60 @@ createUserName( accounts );
 
 
 
+//Using the Array.prototype.find(callbackfn) to find a certain account in the arrays data
+//1. using find to fing the account logged in into the account
+
+const findAccountToLogin = ( accountsToFindFrom ) => {
+  return accountsToFindFrom.find( acc => acc.userName === inputLoginUsername.value );
+};
+
+//set a temporaly variable, which keep track of the account
+let accountLoggedIn;
+
+//Adding the login btn addEventListener
+btnLogin.addEventListener( 'click', e => {
+  //Preventing the button before submission
+  e.preventDefault();
+  // console.log(e);
+  //set the account logged in from function findaccont to login
+  accountLoggedIn = findAccountToLogin( accounts );
+  // console.log( accountLoggedIn );
+
+  //check if the pin entered is correct
+  if (accountLoggedIn && accountLoggedIn?.pin === Number( inputLoginPin.value ) ) {
+    // console.log( 'You have been logged in' );
+
+
+    //Display the UI message
+    labelWelcome.innerText = `Welcome, ${ accountLoggedIn.owner.split( ' ' )[ 0 ] }, Logged in`;
+    //make the text bold
+    labelWelcome.style.fontWeight = 'bolder';
+    //Display movement
+    //Use the function on the first account
+    displayMovements( accountLoggedIn.movements );
+    //Display balance
+    //call the function using the accountLoggedin
+    calcDisplayBalance( account2.movements );
+
+    //Display the summary
+    calcDisplaySummary( accountLoggedIn );
+ 
+
+    //do not need them for now since the inputs are hidden
+    // //Clear the input the fields
+    // inputLoginPin.value = inputLoginUsername.value = '';
+    // //clear the focus
+    // inputLoginPin.blur();
+
+
+    //bring back the opacity to display the results
+    containerApp.style.opacity = 100;
+    
+    //change the text of the login Button to logout
+    btnLogin.innerText = 'Log Out';
+
+    //hide the loginInputs
+    inputLoginPin.hidden = inputLoginUsername.hidden = true;
+  }
+
+} );
