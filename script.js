@@ -65,10 +65,10 @@ const inputClosePin = document.querySelector( '.form__input--pin' );
 
 //1. Displaying the movements inside the movements Conatiner
 
-const displayMovements = ( movements ) => {
+const displayMovements = ( accountToDisplayMovements ) => {
   //reset the containerMovements
   containerMovements.innerHTML = '';
-  movements.forEach( ( mov, idx ) => {
+  accountToDisplayMovements.movements.forEach( ( mov, idx ) => {
     // console.log( mov, idx );
     //set the movement type to depoit or withdrawal
     const movType = mov > 0 ? 'deposit' : 'withdrawal';
@@ -87,12 +87,13 @@ const displayMovements = ( movements ) => {
 
 
 //Create a function to calculate and display the results to the dom
-const calcDisplayBalance = ( acc ) => {
+const calcDisplayBalance = ( accToDisplayBalance ) => {
   //calculate the balance remain in the account
-  const balanceToDisplay = acc.reduce( ( acc, curr ) => acc + curr );
-
+  const balanceToDisplay = accToDisplayBalance.movements.reduce( ( acc, curr ) => acc + curr );
+ //add the balance to the account
+  accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${ balanceToDisplay } EUR€`;
+  labelBalance.innerText = `${balanceToDisplay} EUR€`;
 };
 
 
@@ -150,7 +151,19 @@ createUserName( accounts );
 // console.log(userName);
 
 
+//Display the UI 
 
+const updateUI = (acc) => {
+   //Display movement
+    //Use the function on the account Logged In
+    displayMovements( acc );
+    //Display balance
+    //call the function using the accountLoggedin
+    calcDisplayBalance(acc);
+
+    //Display the summary
+    calcDisplaySummary( acc );
+}
 
 
 
@@ -182,32 +195,92 @@ btnLogin.addEventListener( 'click', e => {
     labelWelcome.innerText = `Welcome, ${ accountLoggedIn.owner.split( ' ' )[ 0 ] }, Logged in`;
     //make the text bold
     labelWelcome.style.fontWeight = 'bolder';
-    //Display movement
-    //Use the function on the first account
-    displayMovements( accountLoggedIn.movements );
-    //Display balance
-    //call the function using the accountLoggedin
-    calcDisplayBalance( account2.movements );
+   
 
-    //Display the summary
-    calcDisplaySummary( accountLoggedIn );
+    //Update the UI for the account Logged In
+    updateUI( accountLoggedIn );
  
 
     //do not need them for now since the inputs are hidden
     // //Clear the input the fields
-    // inputLoginPin.value = inputLoginUsername.value = '';
+    inputLoginPin.value = inputLoginUsername.value = '';
     // //clear the focus
-    // inputLoginPin.blur();
+    inputLoginPin.blur();
 
 
     //bring back the opacity to display the results
     containerApp.style.opacity = 100;
     
     //change the text of the login Button to logout
-    btnLogin.innerText = 'Log Out';
+    // btnLogin.innerText = 'Log Out';
 
     //hide the loginInputs
-    inputLoginPin.hidden = inputLoginUsername.hidden = true;
+    // inputLoginPin.hidden = inputLoginUsername.hidden = true;
   }
 
 } );
+
+
+//implementing the transfer
+btnTransfer.addEventListener( 'click', e => {
+  //stop the default submission
+  e.preventDefault();
+
+  //get the account to transfer to
+  const amountToTransfer = Number(inputTransferAmount.value);
+  const accToTransferTo = accounts.find(acc => acc.userName === inputTransferTo.value);
+
+  console.log( accToTransferTo );
+  console.log( amountToTransfer );
+
+  //check if the amountToTransfer is greater than 0, less than the account's balance, the receiverAccount exists and the accountToTransferTo is not the account logged in
+  if ( amountToTransfer  > 0 &&
+    accToTransferTo  &&
+    amountToTransfer <= accountLoggedIn.balance &&
+    accToTransferTo?.userName !== accountLoggedIn.userName ) {
+     //execute the transfert
+    //add a negative movemnet to the currentAccount
+    accountLoggedIn.movements.push( -amountToTransfer );
+
+    // console.log( accountLoggedIn.movements );
+    //add a positive movement to the receiving account
+    accToTransferTo.movements.push( amountToTransfer )
+    // console.log(accToTransferTo.movements);
+
+    //update the User Interface
+    updateUI( accountLoggedIn );
+
+    //clear the inputs after transfer
+    inputTransferAmount.value = inputTransferTo.value = '';
+
+  } else {
+    console.log('The transaction was not executed');
+    }
+} );
+
+
+
+//Delete the user from the account array after deletting the account
+
+btnClose.addEventListener( 'click', e => {
+  e.preventDefault();
+  //get the account
+  const userToDelete = inputCloseUsername.value;
+  //get the pin
+  const userPin = Number( inputClosePin.value );
+  //get the account from the userName
+  const accToDelete = accounts.filter( acc => acc.userName === userToDelete );
+  
+  console.log( accToDelete[ 0 ] );
+  console.log( accountLoggedIn === accToDelete[ 0 ] );
+  console.log( 'Dleted Account' );
+  //CHeck the account details
+
+  
+  //check the the account credentials are correct
+  if ( accToDelete[ 0 ] === accountLoggedIn && accToDelete[ 0 ].pin === userPin ) {
+    console.log( 'Account is the current to be deletd' );
+  } else {
+    console.log( 'You did not add the current account' );
+  }
+} );  
