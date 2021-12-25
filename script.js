@@ -90,10 +90,10 @@ const displayMovements = ( accountToDisplayMovements ) => {
 const calcDisplayBalance = ( accToDisplayBalance ) => {
   //calculate the balance remain in the account
   const balanceToDisplay = accToDisplayBalance.movements.reduce( ( acc, curr ) => acc + curr );
- //add the balance to the account
+  //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${balanceToDisplay} EUR€`;
+  labelBalance.innerText = `${ balanceToDisplay } EUR€`;
 };
 
 
@@ -108,13 +108,13 @@ const calcDisplaySummary = ( accountToDisplay ) => {
 
   // console.log( totalDeposits );
   //calculate the totalWithdrawals
-  const totalWithdrawals =  accountToDisplay.movements.filter( mov => mov < 0 )
+  const totalWithdrawals = accountToDisplay.movements.filter( mov => mov < 0 )
     .map( mov => mov )
     .reduce( ( accum, currMov ) => accum + currMov );
   // console.log(totalWithdrawals);
 
   //calculate the interest earned from the deposit, 1.2% for every depodit
-  const totalInterestEarned =  accountToDisplay.movements.filter( mov => mov > 0 )
+  const totalInterestEarned = accountToDisplay.movements.filter( mov => mov > 0 )
     .map( mov => ( mov * accountToDisplay.interestRate ) / 100 )
     .filter( interestEarned => interestEarned >= 1 )
     .map( interest => interest )
@@ -153,17 +153,17 @@ createUserName( accounts );
 
 //Display the UI 
 
-const updateUI = (acc) => {
-   //Display movement
-    //Use the function on the account Logged In
-    displayMovements( acc );
-    //Display balance
-    //call the function using the accountLoggedin
-    calcDisplayBalance(acc);
+const updateUI = ( acc ) => {
+  //Display movement
+  //Use the function on the account Logged In
+  displayMovements( acc );
+  //Display balance
+  //call the function using the accountLoggedin
+  calcDisplayBalance( acc );
 
-    //Display the summary
-    calcDisplaySummary( acc );
-}
+  //Display the summary
+  calcDisplaySummary( acc );
+};
 
 
 
@@ -187,7 +187,7 @@ btnLogin.addEventListener( 'click', e => {
   // console.log( accountLoggedIn );
 
   //check if the pin entered is correct
-  if (accountLoggedIn && accountLoggedIn?.pin === Number( inputLoginPin.value ) ) {
+  if ( accountLoggedIn && accountLoggedIn?.pin === Number( inputLoginPin.value ) ) {
     // console.log( 'You have been logged in' );
 
 
@@ -195,11 +195,11 @@ btnLogin.addEventListener( 'click', e => {
     labelWelcome.innerText = `Welcome, ${ accountLoggedIn.owner.split( ' ' )[ 0 ] }, Logged in`;
     //make the text bold
     labelWelcome.style.fontWeight = 'bolder';
-   
+
 
     //Update the UI for the account Logged In
     updateUI( accountLoggedIn );
- 
+
 
     //do not need them for now since the inputs are hidden
     // //Clear the input the fields
@@ -210,7 +210,7 @@ btnLogin.addEventListener( 'click', e => {
 
     //bring back the opacity to display the results
     containerApp.style.opacity = 100;
-    
+
     //change the text of the login Button to logout
     // btnLogin.innerText = 'Log Out';
 
@@ -225,7 +225,7 @@ btnLoan.addEventListener( 'click', e => {
   e.preventDefault();
 
   const loanRequestAmount = Number( inputLoanAmount.value );
-//check if the any of the deposits is greater than 10%
+  //check if the any of the deposits is greater than 10%
   const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
 
   // console.log(amountRequestedGreaterThan10Percent);
@@ -235,12 +235,12 @@ btnLoan.addEventListener( 'click', e => {
     //push the amount of loan into the requested amount
     accountLoggedIn.movements.push( loanRequestAmount );
     // console.log( accountLoggedIn.movements );
-    
+
     //update the UI after pushing the loan as a deposit
     updateUI( accountLoggedIn );
-  } 
+  }
 
-})
+} );
 
 //implementing the transfer
 btnTransfer.addEventListener( 'click', e => {
@@ -248,24 +248,24 @@ btnTransfer.addEventListener( 'click', e => {
   e.preventDefault();
 
   //get the account to transfer to
-  const amountToTransfer = Number(inputTransferAmount.value);
-  const accToTransferTo = accounts.find(acc => acc.userName === inputTransferTo.value);
+  const amountToTransfer = Number( inputTransferAmount.value );
+  const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
 
   console.log( accToTransferTo );
   console.log( amountToTransfer );
 
   //check if the amountToTransfer is greater than 0, less than the account's balance, the receiverAccount exists and the accountToTransferTo is not the account logged in
-  if ( amountToTransfer  > 0 &&
-    accToTransferTo  &&
+  if ( amountToTransfer > 0 &&
+    accToTransferTo &&
     amountToTransfer <= accountLoggedIn.balance &&
     accToTransferTo?.userName !== accountLoggedIn.userName ) {
-     //execute the transfert
+    //execute the transfert
     //add a negative movemnet to the currentAccount
     accountLoggedIn.movements.push( -amountToTransfer );
 
     // console.log( accountLoggedIn.movements );
     //add a positive movement to the receiving account
-    accToTransferTo.movements.push( amountToTransfer )
+    accToTransferTo.movements.push( amountToTransfer );
     // console.log(accToTransferTo.movements);
 
     //update the User Interface
@@ -275,8 +275,8 @@ btnTransfer.addEventListener( 'click', e => {
     inputTransferAmount.value = inputTransferTo.value = '';
 
   } else {
-    console.log('The transaction was not executed');
-    }
+    console.log( 'The transaction was not executed' );
+  }
 } );
 
 
@@ -291,28 +291,46 @@ btnClose.addEventListener( 'click', e => {
   const userPin = Number( inputClosePin.value );
   //get the account from the userName
   const accToDelete = accounts.filter( acc => acc.userName === userToDelete );
-  
+
   console.log( accToDelete[ 0 ] );
   console.log( accountLoggedIn === accToDelete[ 0 ] );
   console.log( 'Dleted Account' );
   //CHeck the account details
 
-  
+
   //check the the account credentials are correct
   if ( accToDelete[ 0 ] === accountLoggedIn && accToDelete[ 0 ].pin === userPin ) {
     // console.log( 'Account is the current to be deletd' );
     //get the index of  the account to delete
-    const indexOfAccToDelete = accounts.findIndex( acc => acc.userName === accToDelete[0].userName);
+    const indexOfAccToDelete = accounts.findIndex( acc => acc.userName === accToDelete[ 0 ].userName );
     console.log( indexOfAccToDelete );
-    
+
     //delete the current account and hide the UI
     accounts.splice( indexOfAccToDelete, 1 );
     // console.log( accounts );
 
     //hide the UI
     containerApp.style.opacity = 0;
-    
+
   }
-} );  
+} );
 
 
+//Using Array.flat(depthArg) and Array.flatMap which combines both Array.flat and Array.map
+
+const nestedArr = [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ];
+
+const flattenedArr1 = nestedArr.flat( 1 );
+console.log( flattenedArr1 ); //[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+const nestedDeepArr = [ [ 1, 2, 3, [ 4, 5, 6 ] ], [ 7, [ 8, 9 ] ] ];
+const flattenedArr2 = nestedDeepArr.flat( 2 );
+console.log( flattenedArr2 ); //[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+// const allMovements = accounts.map( acc => acc.movements );
+// console.log(allMovements);
+
+//calculate the total amount deposited and withdrawn by the account
+const totalBalance = accounts.map( acc => acc.movements ).flat().reduce( ( acc, currMov ) => acc + currMov );
+console.log( totalBalance );
