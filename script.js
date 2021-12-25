@@ -220,6 +220,27 @@ btnLogin.addEventListener( 'click', e => {
 
 } );
 
+//Implementing the requestLOan
+btnLoan.addEventListener( 'click', e => {
+  e.preventDefault();
+
+  const loanRequestAmount = Number( inputLoanAmount.value );
+//check if the any of the deposits is greater than 10%
+  const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
+
+  // console.log(amountRequestedGreaterThan10Percent);
+
+  //check if the details for the loan are correct
+  if ( loanRequestAmount && accountLoggedIn && amountRequestedGreaterThan10Percent ) {
+    //push the amount of loan into the requested amount
+    accountLoggedIn.movements.push( loanRequestAmount );
+    // console.log( accountLoggedIn.movements );
+    
+    //update the UI after pushing the loan as a deposit
+    updateUI( accountLoggedIn );
+  } 
+
+})
 
 //implementing the transfer
 btnTransfer.addEventListener( 'click', e => {
@@ -279,8 +300,19 @@ btnClose.addEventListener( 'click', e => {
   
   //check the the account credentials are correct
   if ( accToDelete[ 0 ] === accountLoggedIn && accToDelete[ 0 ].pin === userPin ) {
-    console.log( 'Account is the current to be deletd' );
-  } else {
-    console.log( 'You did not add the current account' );
+    // console.log( 'Account is the current to be deletd' );
+    //get the index of  the account to delete
+    const indexOfAccToDelete = accounts.findIndex( acc => acc.userName === accToDelete[0].userName);
+    console.log( indexOfAccToDelete );
+    
+    //delete the current account and hide the UI
+    accounts.splice( indexOfAccToDelete, 1 );
+    // console.log( accounts );
+
+    //hide the UI
+    containerApp.style.opacity = 0;
+    
   }
 } );  
+
+
