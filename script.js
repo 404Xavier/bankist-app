@@ -334,3 +334,7 @@ console.log( flattenedArr2 ); //[1, 2, 3, 4, 5, 6, 7, 8, 9]
 //calculate the total amount deposited and withdrawn by the account
 const totalBalance = accounts.map( acc => acc.movements ).flat().reduce( ( acc, currMov ) => acc + currMov );
 console.log( totalBalance );
+
+//Using flatMap
+const totalBalanceV2 = accounts.flatMap(acc => acc.movements).reduce( ( acc, currMov ) => acc + currMov );
+console.log( totalBalanceV2 );
