@@ -397,3 +397,6 @@ labelBalance.addEventListener( 'click', e => {
   console.log(movementsValuesFromUI);
 })
 
+/****
+ * Coding Challenge
+ */
