@@ -75,7 +75,7 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
   let movs = sorted ? accountToDisplayMovements?.movements.slice().sort( ( a, b ) => a - b ) : accountToDisplayMovements.movements;
 
   //show the movs sorted or unsorrted
-  console.log(movs);
+  console.log( movs );
 
   movs.forEach( ( mov, idx ) => {
     // console.log( mov, idx );
@@ -85,7 +85,7 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
     const movementRowHTML = `
       <div class="movements__row">
             <div class="movements__type movements__type--${ movType }">${ idx } ${ movType }</div>
-            <div class="movements__value">${  mov  } EUR€</div>
+            <div class="movements__value">${ mov } EUR€</div>
       </div>
     `;
 
@@ -355,48 +355,113 @@ const acc1Movements = account1.movements;
 
 
 //Creating and filling arrays
- 
+
 const arryOne = Array( 1, 2, 3, 4, 5, 6, 7 );
-console.log( arryOne ); //[1, 2, 3, 4, 5, 6, 7]
+// console.log( arryOne ); //[1, 2, 3, 4, 5, 6, 7]/
 
 const arrConstructor = new Array( 7 );
-console.log( arrConstructor ); //[empty × 7]
+// console.log( arrConstructor ); //[empty × 7]
 
 const arrFilledAfterConstruction = arrConstructor.fill( 1 );
-console.log( arrFilledAfterConstruction ); //[1, 1, 1, 1, 1, 1, 1]
+// console.log( arrFilledAfterConstruction ); //[1, 1, 1, 1, 1, 1, 1]
 
 arrFilledAfterConstruction.fill( 3, 2, 5 ); //[1,1, 3, 3, 3, 1, 1 ]
-console.log( arrFilledAfterConstruction );
+// console.log( arrFilledAfterConstruction );
 
 
 //Using Arrayfrom
 
 const arryTwo = Array.from( { length: 7 }, ( el, idx ) => {
   //currently element is in nto available
-  console.log(idx );
+  // console.log(idx );
   return idx + 1;
-})
+} );
 
-console.log( arryTwo ); //[1, 2, 3, 4, 5, 6, 7]
+//console.log( arryTwo ); //[1, 2, 3, 4, 5, 6, 7]
 
 
 
 const randomDiceRolls = Array.from( { length: 100 }, () => Math.floor( Math.random() * 6 ) + 1 );
-console.log( randomDiceRolls ); //[5, 3, 3, 1, 5, 3, 4, 4, 6, 5, 1, 5, 3, 6, 3, 5, 4, 2, 1, 4, 3, 6, 2, 2, 5, 1, 3, 3, 1, 1, 3, 2, 1, 2, 6, 4, 4, 2, 4, 5, 3, 4, 4, 2, 4, 1, 6, 3, 2, 4, 3, 1, 1, 2, 1, 3, 5, 1, 3, 2, 3, 3, 3, 5, 1, 6, 2, 5, 4, 4, 3, 3, 2, 6, 3, 1, 2, 6, 6, 5, 1, 1, 1, 3, 5, 3, 2, 1, 5, 4, 2, 6, 4, 2, 1, 5, 6, 1, 3, 6]
+//console.log( randomDiceRolls ); //[5, 3, 3, 1, 5, 3, 4, 4, 6, 5, 1, 5, 3, 6, 3, 5, 4, 2, 1, 4, 3, 6, 2, 2, 5, 1, 3, 3, 1, 1, 3, 2, 1, 2, 6, 4, 4, 2, 4, 5, 3, 4, 4, 2, 4, 1, 6, 3, 2, 4, 3, 1, 1, 2, 1, 3, 5, 1, 3, 2, 3, 3, 3, 5, 1, 6, 2, 5, 4, 4, 3, 3, 2, 6, 3, 1, 2, 6, 6, 5, 1, 1, 1, 3, 5, 3, 2, 1, 5, 4, 2, 6, 4, 2, 1, 5, 6, 1, 3, 6]
 
 
 const numberOneToHundred = Array.from( { length: 100 }, ( _, idx ) => idx + 1 );
-console.log(numberOneToHundred); //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+//console.log(numberOneToHundred); //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
 
 
 //getting elements from the DOM
 labelBalance.addEventListener( 'click', e => {
-  
+
   const movementsValuesFromUI = Array.from( document.querySelectorAll( '.movements__value' ), el => Number( el.innerText.replace( 'EUR€', '' ) ) );
-  console.log(movementsValuesFromUI);
-})
+  // console.log(movementsValuesFromUI);
+} );
 
 /****
- * Coding Challenge
+ * Coding Challenge of Arrays
  */
+
+//1. Getting the Bank deposit sums from the bank
+
+//get all the movemnets in the bank 
+const allMovements = accounts.map( acc => acc.movements ).flat();
+const allMovementsV2 = accounts.flatMap( acc => acc.movements );
+console.log( allMovements ); //[200, 450, -400, 3000, -650, -130, 70, 1300, 5000, 3400, -150, -790, -3210, -1000, 8500, -30, 200, -200, 340, -300, -20, 50, 400, -460, 430, 1000, 700, 50, 90]
+console.log( allMovementsV2 ); //[200, 450, -400, 3000, -650, -130, 70, 1300, 5000, 3400, -150, -790, -3210, -1000, 8500, -30, 200, -200, 340, -300, -20, 50, 400, -460, 430, 1000, 700, 50, 90]
+
+//store all deposits in an array
+const allDeposits = allMovements.filter( mov => mov > 0 );
+
+//calculate the total value of the deposits
+const totalAmountDeposited = allDeposits.reduce( ( sum, curr ) => sum + curr );
+console.log( totalAmountDeposited ); //251180
+
+
+//2. Get how many deposits have a value greater or equal to 1000
+//using reduce
+const depositGreaterThanThaoCount = allDeposits.filter( mov => mov >= 1000 ).length;
+//using array.length
+const depositGreaterThanThaoCountV2 = allDeposits.filter( mov => mov >= 1000 ).reduce( ( count, curr ) => ( curr >= 1000 ? count + 1 : count ), 0 );
+//using reduce
+console.log( depositGreaterThanThaoCount ); //6 //
+console.log( depositGreaterThanThaoCountV2 ); //6 //
+
+
+
+
+//Calculating the sum of deposits and withdrawals as an object using reduce {totalDeposits: 0, totalWithdrawals: 0}
+const totalDepositsWithdrawals = allMovements.reduce( ( sums, curr ) => {
+
+  //check if curr value is greater than 0 and add it to the totalDeposit and if less than 0 add it to totalWithdrawals
+  // curr > 0 ? sums.totalDeposits += curr : sums.totalWithdrawals += curr;
+
+  //an alternative by directly accessing the key values
+  sums[ curr > 0 ? 'totalDeposits' : 'totalWithdrawals' ] += curr;
+  //return sums value
+  return sums;
+}, { totalDeposits: 0, totalWithdrawals: 0 } );
+
+console.log( totalDepositsWithdrawals ); //{totalDeposits: 25180, totalWithdrawals: -7340}
+
+
+
+//Converting the title case of 
+//words not to convert
+const exceptions = [ 'a', 'and', 'of', 'the', 'but', 'or', 'on', 'in', 'with', 'who', 'why', 'which' ];
+//create the function to capitalize
+
+const convertTitleToCapital = ( str ) => {
+
+  const capitalize = ( str ) => {
+    return `${ str[ 0 ].toUpperCase() }${ str.slice( 1 ) }`;
+  };  
+  //lower the case of the string
+  let strCopy = str.toLowerCase().split( ' ' )
+    .map( word => `${exceptions.includes(word) ? word : capitalize(word)}` )
+    .join( ' ' );
+
+  return capitalize(strCopy);
+};
+
+console.log( convertTitleToCapital( 'art of CYBER warfare and intruSion' ) ); //Art of Cyber Warfare and Intrusion
+console.log( convertTitleToCapital( 'on of CYBER warfare and intruSion' ) ); //Art of Cyber Warfare and Intrusion
