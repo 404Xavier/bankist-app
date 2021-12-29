@@ -454,14 +454,156 @@ const convertTitleToCapital = ( str ) => {
 
   const capitalize = ( str ) => {
     return `${ str[ 0 ].toUpperCase() }${ str.slice( 1 ) }`;
-  };  
+  };
   //lower the case of the string
   let strCopy = str.toLowerCase().split( ' ' )
-    .map( word => `${exceptions.includes(word) ? word : capitalize(word)}` )
+    .map( word => `${ exceptions.includes( word ) ? word : capitalize( word ) }` )
     .join( ' ' );
 
-  return capitalize(strCopy);
+  return capitalize( strCopy );
 };
 
+
 console.log( convertTitleToCapital( 'art of CYBER warfare and intruSion' ) ); //Art of Cyber Warfare and Intrusion
-console.log( convertTitleToCapital( 'on of CYBER warfare and intruSion' ) ); //Art of Cyber Warfare and Intrusion
+console.log( convertTitleToCapital( 'CYBER warfare and intruSion' ) ); //Art of Cyber Warfare and Intrusion
+
+
+
+
+/***
+ * Challenge 4
+ */
+
+// Coding Challenge #4
+
+/* 
+Julia and Kate are still studying dogs, and this time they are studying if dogs are eating too much or too little.
+Eating too much means the dog's current food portion is larger than the recommended portion, and eating too little is the opposite.
+Eating an okay amount means the dog's current food portion is within a range 10% above and 10% below the recommended portion (see hint).
+
+1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion and add it to the object as a new property. Do NOT create a new array, simply loop over the array. Forumla: recommendedFood = weight ** 0.75 * 28. (The result is in grams of food, and the weight needs to be in kg)
+2. Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple owners, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+3. Create an array containing all owners of dogs who eat too much ('ownersEatTooMuch') and an array with all owners of dogs who eat too little ('ownersEatTooLittle').
+4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!"
+5. Log to the console whether there is any dog eating EXACTLY the amount of food that is recommended (just true or false)
+6. Log to the console whether there is any dog eating an OKAY amount of food (just true or false)
+7. Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+8. Create a shallow copy of the dogs array and sort it by recommended food portion in an ascending order (keep in mind that the portions are inside the array's objects)
+
+HINT 1: Use many different tools to solve these challenges, you can use the summary lecture to choose between them 😉
+HINT 2: Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
+
+TEST DATA:
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] }
+];
+
+GOOD LUCK 😀
+*/
+
+
+const dogs = [
+  { weight: 22, curFood: 250, owners: [ 'Alice', 'Bob' ] },
+  { weight: 8, curFood: 200, owners: [ 'Matilda' ] },
+  { weight: 13, curFood: 275, owners: [ 'Sarah', 'John' ] },
+  { weight: 32, curFood: 340, owners: [ 'Michael' ] }
+];
+
+//add recommende food 
+dogs.forEach( dog => dog.recommendedFood = Math.floor( ( dog.weight ) ** 0.75 * 28 ) );
+// console.log(dogs);
+
+//finding sarahs dogs
+const [ sarahsDog ] = dogs.filter( dog => dog.owners.includes( 'Sarah' ) );
+console.log( sarahsDog );
+//finding sarahs's dpog
+const dogsSarah = dogs.find( dog => dog.owners.includes( 'Sarah' ) );
+console.log( dogsSarah );
+
+//Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple owners, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+const dogEatingRate = ( { curFood, recommendedFood, owners } ) => {
+  if ( curFood > recommendedFood ) {
+    console.log( `The dog is eating too much` );
+  } else {
+    console.log( 'The dog is eating too little' );
+  }
+};
+
+
+dogEatingRate( sarahsDog );
+
+//3. Create an array containing all owners of dogs who eat too much ('ownersEatTooMuch') and an array with all owners of dogs who eat too little ('ownersEatTooLittle').
+
+const ownersEatTooMuch = dogs.filter( ( { curFood, recommendedFood } ) => curFood > recommendedFood ).flatMap( ( { owners } ) => owners );
+console.log( ownersEatTooMuch ); //['Matilda', 'Sarah', 'John']
+
+//filter arrays of ownerEatTooLittle
+const ownersEatTooLittle = dogs.filter( ( { curFood, recommendedFood } ) => curFood < recommendedFood ).flatMap( ( { owners } ) => owners );
+console.log( ownersEatTooLittle ); // ['Alice', 'Bob', 'Michael']
+
+//4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!";;
+
+
+const logStrings = ( arr1, arr2 ) => {
+  return `${ arr1.join( ' and ' ) } eat too much and ${ arr2.join( ' and ' ) } eat too little.`;
+};
+console.log( logStrings( ownersEatTooMuch, ownersEatTooLittle ) ); //Matilda and Sarah and John eat too much and Alice and Bob and Michael eat too little.
+
+
+//5. Log to the console whether there is any dog eating EXACTLY the amount of food that is recommended (just true or false)
+dogs.forEach( ( { curFood, recommendedFood }, idx ) => {
+  //set the amount status
+  let amountStatus;
+  amountStatus = curFood === recommendedFood ? 'true' : 'false';
+  console.log( amountStatus, idx );
+} );
+
+
+
+//Log to the console whether there is any dog eating an Okay amount of food (just true or false)
+// const dogsEatingOkay = ( allDogs ) => {
+//   allDogs.forEach( ( { curFood, recommendedFood } ) => {
+//     //Eating an okay amount means the dog's current food portion is within a range 10% above and 10% below the recommended portion (see hint).
+//     //Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
+//     let amountIsOkay = curFood < (recommendedFood + recommendedFood * 0.1) && curFood > (recommendedFood - recommendedFood * 0.1);
+    
+//     //return if dog is eating okay
+//     return amountIsOkay;
+//   } );
+// };
+
+//Create a function to test if the dog is eating okay
+const dogIsEatingOkay = dog =>  dog.curFood >= (0.9 * dog.recommendedFood) && dog.curFood <= (dog.recommendedFood * 1.1  );
+
+
+ 
+
+//Log to the console if the dog is eating okay
+// const isDogEatingOkay = (dogs, eatingOkayFn) => {
+//   dogs.forEach( eatingOkayFn );
+// }
+console.log(dogs.some( dogIsEatingOkay ));
+
+//log to the console true or false if the dog is eating okay
+// isDogEatingOkay( dogs, dogIsEatingOkay );
+
+
+
+
+//7.  Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+
+const dogsEatingOkayArr = dogs.filter( dogIsEatingOkay );
+console.log(dogsEatingOkayArr); //[{…}]
+
+
+//8. Create a shallow copy of the dogs array and sort it by recommended food portion in an ascending order (keep in mind that the portions are inside the array's objects)
+
+
+//sort from lowest to highest recommended fOOD
+const dogsSorted = dogs.slice().sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(dogsSorted);
+
+
