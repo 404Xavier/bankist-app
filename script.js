@@ -101,7 +101,7 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
     const movementRowHTML = `
       <div class="movements__row">
             <div class="movements__type movements__type--${ movType }">${ idx } ${ movType }</div>
-            <div class="movements__value">${  mov  } EUR€</div>
+            <div class="movements__value">${  mo.toFixed(2)   } EUR€</div>
       </div>
     `;
 
@@ -118,7 +118,7 @@ const calcDisplayBalance = ( accToDisplayBalance ) => {
   //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${ balanceToDisplay } EUR€`;
+  labelBalance.innerText = `${ balanceToDisplay.toFixed(2)  } EUR€`;
 };
 
 
@@ -147,9 +147,9 @@ const calcDisplaySummary = ( accountToDisplay ) => {
   // console.log( totalInterestEarned );
 
   //add the values to the DOM
-  labelSumIn.innerText = `${ totalDeposits }€`;
-  labelSumOut.innerText = `${ Math.abs( totalWithdrawals ) }€`;
-  labelSumInterest.innerText = `${ totalInterestEarned }€`;
+  labelSumIn.innerText = `${ totalDeposits.toFixed(2) }€`;
+  labelSumOut.innerText = `${  totalWithdrawals.toFixed(2) }€`;
+  labelSumInterest.innerText = `${ totalInterestEarned.toFixed(2)  }€`;
 
 };
 
