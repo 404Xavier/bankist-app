@@ -457,92 +457,10 @@ console.log( totalDepositsWithdrawals ); //{totalDeposits: 25180, totalWithdrawa
 
 
 
-/***
- * Number in JS
- * 
- * Js uses 64-bit floating point numbey system, thus represening number  with a decimal fraction is difficult
- * 
- * 
- */
 
-//Floating point system errors
-console.log(0.1 + 0.3 === 0.3);//false
 
 
 /***
- * Numbers, Dates, Intl and Timers
+ * Working dates in JS
  */
 
-
-//Number conversion
-console.log( Number( '20' ) ); //20
-console.log(+'23x'); //NaN
-console.log( +'23' ); //23
-
-//gET NUMBER from data
-console.log(parseFloat('30.5rem'));//30.5
-console.log( parseFloat( '30rem' ) );//30
-console.log( parseFloat( 'x30rem' ) );//NaN
-
-//parseInt
-console.log( parseInt( '2.5rem' ) ); //2
-console.log( parseInt( '25rem' ) ); //25
-console.log( parseInt( 'x25rem' ) ); //NaN
-
-//CHECKING if a number is Not a Number
-console.log(Number.isNaN(20));//false
-console.log(!Number.isNaN(20));//true
-console.log( Number.isNaN( '23' ) );//false 
-console.log( Number.isNaN( +'23' ) );//false
-console.log( Number.isNaN( +'x23' ) );//true
-console.log( Number.isNaN( 20 / 0 ) );//false
-
-//Checking number is an integer
-console.log(Number.isInteger(20));//true
-console.log( Number.isInteger( 20.6 ) );//false
-console.log( Number.isInteger( 20 / 0 ) );//false
-
-
-//checki if a number is infinite
-console.log(Number.isFinite(20));//true
-console.log(Number.isFinite(20 / 0));//false
-
-//Math object method, JS does Boxing, convert the umber to an Object and once finished it converts it to primitive
-
-//Get the sqroot
-console.log( Math.sqrt( 64 ) );//8
-//exponentiation
-console.log(100 ** (1/ 2) ); //10
-console.log(Math.round(729 ** (1/ 3)) ); //9
-console.log( 729 ** ( 1 / 3 ) ); //8.999999999999998
-
-
-const randomInt = ( min, max ) => Math.floor( Math.random() * ( max - min ) + min );
-console.log(randomInt(0, 100));
-
-
-//round of to fixed Number of decimal places
-//returns a string so you have to convert the return value to number
-console.log(+(2.56).toFixed(1)); //2.6
-console.log(+(2.56).toFixed(2));//2.56
-console.log(+(2.56).toFixed(3));//2.560
-console.log(+(2.56).toFixed(4));//2.5600
-
-
-/***
- * Working with BigInt
- */
-
-const hugeNo = 39499494994994949949003003030030003003000303003003n;
-console.log( hugeNo ); //9499494994994949949003003030030003003000303003003n
-
-console.log( 20n === 20 ); //false, they are not of the same type on is bigint the other is number
-
-//console.log(20 / 4n); //script.js:541 Uncaught TypeError: Cannot mix BigInt and other types, use explicit conversions
-console.log(2 ** 69 );
-
-const maxNo = 2 ** 69;
-console.log( Number.MAX_SAFE_INTEGER ); //9007199254740991
-console.log( maxNo ); //590295810358705700000
-console.log(590295810358705700000n * 9007199254740991n ); //5316911983139663336259055495348700000n
-console.log(maxNo < Number.MAX_SAFE_INTEGER);
