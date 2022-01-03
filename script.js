@@ -529,3 +529,20 @@ console.log(+(2.56).toFixed(3));//2.560
 console.log(+(2.56).toFixed(4));//2.5600
 
 
+/***
+ * Working with BigInt
+ */
+
+const hugeNo = 39499494994994949949003003030030003003000303003003n;
+console.log( hugeNo ); //9499494994994949949003003030030003003000303003003n
+
+console.log( 20n === 20 ); //false, they are not of the same type on is bigint the other is number
+
+//console.log(20 / 4n); //script.js:541 Uncaught TypeError: Cannot mix BigInt and other types, use explicit conversions
+console.log(2 ** 69 );
+
+const maxNo = 2 ** 69;
+console.log( Number.MAX_SAFE_INTEGER ); //9007199254740991
+console.log( maxNo ); //590295810358705700000
+console.log(590295810358705700000n * 9007199254740991n ); //5316911983139663336259055495348700000n
+console.log(maxNo < Number.MAX_SAFE_INTEGER);
