@@ -101,7 +101,7 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
     const movementRowHTML = `
       <div class="movements__row">
             <div class="movements__type movements__type--${ movType }">${ idx } ${ movType }</div>
-            <div class="movements__value">${  mo.toFixed(2)   } EUR€</div>
+            <div class="movements__value">${  mov.toFixed(2)   } EUR€</div>
       </div>
     `;
 
@@ -248,8 +248,8 @@ btnLogin.addEventListener( 'click', e => {
 //Implementing the requestLOan
 btnLoan.addEventListener( 'click', e => {
   e.preventDefault();
-
-  const loanRequestAmount = Number( inputLoanAmount.value );
+  //get the amount of loan requested and floor it
+  const loanRequestAmount = Math.floor(inputLoanAmount.value);
   //check if the any of the deposits is greater than 10%
   const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
 
@@ -273,7 +273,7 @@ btnTransfer.addEventListener( 'click', e => {
   e.preventDefault();
 
   //get the account to transfer to
-  const amountToTransfer = Number( inputTransferAmount.value );
+  const amountToTransfer = Math.floor(inputTransferAmount.value);
   const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
 
   // console.log( accToTransferTo );
