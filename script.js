@@ -6,7 +6,7 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  movements: [ 200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300 ],
   interestRate: 1.2, // %
   pin: 1111,
 
@@ -26,7 +26,7 @@ const account1 = {
 
 const account2 = {
   owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movements: [ 5000, 3400, -150, -790, -3210, -1000, 8500, -30 ],
   interestRate: 1.5,
   pin: 2222,
 
@@ -44,7 +44,7 @@ const account2 = {
   locale: 'en-US',
 };
 
-const accounts = [account1, account2];
+const accounts = [ account1, account2 ];
 
 // Elements
 const labelWelcome = document.querySelector( '.welcome' );
@@ -463,4 +463,27 @@ console.log( totalDepositsWithdrawals ); //{totalDeposits: 25180, totalWithdrawa
 /***
  * Working dates in JS
  */
+
+console.log( new Date( 0 ) );//Thu Jan 01 1970 03:00:00 GMT+0300 (East Africa Time) //Unix time
+
+
+//There are four ways of getting and setting dates
+//Using dateNow
+
+//1. Getting the date using new Date method
+const dateNow = new Date();
+console.log( dateNow );
+console.dir( dateNow );
+
+//2. Parsing a date string
+console.log( new Date( 'Sep 27 1999 08:09:34' ) ); //Mon Sep 27 1999 08:09:34 GMT+0300 (East Africa Time)
+
+//Third creating using
+
+// console.log(new Date(1999, 08, 27, 03, 04, 45)); //Octal literals are not allowed strict-mode
+
+//Fourth way, creating from timeStamps
+//1000 days since unix time
+console.log(new Date(1000 * 24 * 60 * 60 * 1000));//Wed Sep 27 1972 03:00:00 GMT+0300 (East Africa Time)
+
 
