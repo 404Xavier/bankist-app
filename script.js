@@ -11,7 +11,7 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  movements: [ 200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300 ],
   interestRate: 1.2, // %
   pin: 1111,
 
@@ -31,7 +31,7 @@ const account1 = {
 
 const account2 = {
   owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movements: [ 5000, 3400, -150, -790, -3210, -1000, 8500, -30 ],
   interestRate: 1.5,
   pin: 2222,
 
@@ -49,7 +49,7 @@ const account2 = {
   locale: 'en-US',
 };
 
-const accounts = [account1, account2];
+const accounts = [ account1, account2 ];
 
 // Elements
 const labelWelcome = document.querySelector( '.welcome' );
@@ -77,6 +77,27 @@ const inputLoanAmount = document.querySelector( '.form__input--loan-amount' );
 const inputCloseUsername = document.querySelector( '.form__input--user' );
 const inputClosePin = document.querySelector( '.form__input--pin' );
 
+
+//Getting the date and time to show, as the current date and time;
+const timeNow = () => {
+  const dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = `${ dateNow.getMonth() + 1 }`.padStart( 2, 0 );
+  let day = `${ dateNow.getDate() }`.padStart( 2, 0 );
+  //GET  the hours
+  let hrs = `${ dateNow.getHours() }`.padStart( 2, 0 );
+  let min = `${ dateNow.getMinutes() }`.padStart( 2, 0 );
+  
+  let timeNow = `${ day }/${ month }/${ year }, ${ hrs }:${ min }`;
+  return timeNow;
+}
+
+//update the timeNow in the label date every one second
+setInterval( () => {
+  labelDate.innerText = timeNow();
+}, 1000 );
+
+
 /**Deleted all the projects before in the script for array methods */
 
 //1. Displaying the movements inside the movements Conatiner
@@ -91,17 +112,26 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
   let movs = sorted ? accountToDisplayMovements?.movements.slice().sort( ( a, b ) => a - b ) : accountToDisplayMovements.movements;
 
   //show the movs sorted or unsorrted
-  console.log(movs);
+  console.log( movs );
 
   movs.forEach( ( mov, idx ) => {
     // console.log( mov, idx );
     //set the movement type to depoit or withdrawal
     const movType = mov > 0 ? 'deposit' : 'withdrawal';
+    //set the date 
+    let dateOfMovement = new Date( accountToDisplayMovements.movementsDates[ idx ] );
+    console.log( dateOfMovement );
+    let year = dateOfMovement.getFullYear();
+    let month = `${ dateOfMovement.getMonth() + 1 }`.padStart( 2, 0 );
+    let day = `${ dateOfMovement.getDate() }`.padStart( 2, 0 );
+    let dateFormatted = `${ day }/${ month }/${ year }`;
+
     //create the movemet row
     const movementRowHTML = `
       <div class="movements__row">
             <div class="movements__type movements__type--${ movType }">${ idx } ${ movType }</div>
-            <div class="movements__value">${  mov.toFixed(2)   } EUR€</div>
+            <div class="movements__date">${ dateFormatted }</div>
+            <div class="movements__value">${ mov.toFixed( 2 ) } EUR€</div>
       </div>
     `;
 
@@ -118,7 +148,7 @@ const calcDisplayBalance = ( accToDisplayBalance ) => {
   //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${ balanceToDisplay.toFixed(2)  } EUR€`;
+  labelBalance.innerText = `${ balanceToDisplay.toFixed( 2 ) } EUR€`;
 };
 
 
@@ -147,9 +177,9 @@ const calcDisplaySummary = ( accountToDisplay ) => {
   // console.log( totalInterestEarned );
 
   //add the values to the DOM
-  labelSumIn.innerText = `${ totalDeposits.toFixed(2) }€`;
-  labelSumOut.innerText = `${  totalWithdrawals.toFixed(2) }€`;
-  labelSumInterest.innerText = `${ totalInterestEarned.toFixed(2)  }€`;
+  labelSumIn.innerText = `${ totalDeposits.toFixed( 2 ) }€`;
+  labelSumOut.innerText = `${ totalWithdrawals.toFixed( 2 ) }€`;
+  labelSumInterest.innerText = `${ totalInterestEarned.toFixed( 2 ) }€`;
 
 };
 
@@ -201,6 +231,12 @@ const findAccountToLogin = ( accountsToFindFrom ) => {
 
 //set a temporaly variable, which keep track of the account
 let accountLoggedIn;
+//Fake the Login ***********************************************
+accountLoggedIn = account1;
+updateUI( accountLoggedIn );
+containerApp.style.opacity = 100;
+
+
 
 //Adding the login btn addEventListener
 btnLogin.addEventListener( 'click', e => {
@@ -227,9 +263,9 @@ btnLogin.addEventListener( 'click', e => {
 
 
     //do not need them for now since the inputs are hidden
-    // //Clear the input the fields
+    //Clear the input the fields
     inputLoginPin.value = inputLoginUsername.value = '';
-    // //clear the focus
+    //clear the focus
     inputLoginPin.blur();
 
 
@@ -249,7 +285,7 @@ btnLogin.addEventListener( 'click', e => {
 btnLoan.addEventListener( 'click', e => {
   e.preventDefault();
   //get the amount of loan requested and floor it
-  const loanRequestAmount = Math.floor(inputLoanAmount.value);
+  const loanRequestAmount = Math.floor( inputLoanAmount.value );
   //check if the any of the deposits is greater than 10%
   const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
 
@@ -260,6 +296,8 @@ btnLoan.addEventListener( 'click', e => {
     //push the amount of loan into the requested amount
     accountLoggedIn.movements.push( loanRequestAmount );
     // console.log( accountLoggedIn.movements );
+    //push date to the movements
+    accountLoggedIn.movementsDates.push( new Date().toISOString() );
 
     //update the UI after pushing the loan as a deposit
     updateUI( accountLoggedIn );
@@ -273,7 +311,7 @@ btnTransfer.addEventListener( 'click', e => {
   e.preventDefault();
 
   //get the account to transfer to
-  const amountToTransfer = Math.floor(inputTransferAmount.value);
+  const amountToTransfer = Math.floor( inputTransferAmount.value );
   const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
 
   // console.log( accToTransferTo );
@@ -287,11 +325,15 @@ btnTransfer.addEventListener( 'click', e => {
     //execute the transfert
     //add a negative movemnet to the currentAccount
     accountLoggedIn.movements.push( -amountToTransfer );
+    //push the date
+    accountLoggedIn.movementsDates.push( new Date().toISOString() );
 
     // console.log( accountLoggedIn.movements );
     //add a positive movement to the receiving account
     accToTransferTo.movements.push( amountToTransfer );
     // console.log(accToTransferTo.movements);
+    //add the transfer to 
+    accToTransferTo.movementsDates.push( new Date().toISOString() );
 
     //update the User Interface
     updateUI( accountLoggedIn );
