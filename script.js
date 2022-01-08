@@ -45,7 +45,7 @@ const account2 = {
     '2020-06-25T18:49:59.371Z',
     '2020-07-26T12:01:20.894Z',
   ],
-  currency: 'SAR',
+  currency: 'EUR',
   locale: 'en-GB',
 };
 
@@ -103,8 +103,8 @@ const formatCurrencies = ( value, locale, currency ) => {
     {
       style: 'currency',
       currency: currency
-    } ).format(value);
-}
+    } ).format( value );
+};
 
 //TESTING THE FUNCTION
 // console.log(formatCurrencies(200000, 'en-US', 'KSH'));
@@ -138,12 +138,14 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
     // DELTE DATE
     const formattedDate = formatMovementsDate( dateOfMovement, accountToDisplayMovements.locale );
 
+    //Format the movement value is formatCurrencies function
+    let formattedMov = formatCurrencies( mov, accountToDisplayMovements.locale, accountToDisplayMovements.currency );
     //create the movemet row
     const movementRowHTML = `
       <div class="movements__row">
             <div class="movements__type movements__type--${ movType }">${ idx + 1 } ${ movType }</div>
           <div class="movements__date">${ formattedDate }</div> 
-            <div class="movements__value">${ mov.toFixed( 2 ) } EUR€</div>
+            <div class="movements__value">${ formattedMov }</div>
       </div>
     `;
 
@@ -160,7 +162,7 @@ const calcDisplayBalance = ( accToDisplayBalance ) => {
   //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${ balanceToDisplay.toFixed( 2 ) } EUR€`;
+  labelBalance.innerText = `${formatCurrencies(balanceToDisplay, accToDisplayBalance.locale, accToDisplayBalance.currency) }`;
 };
 
 
@@ -189,10 +191,9 @@ const calcDisplaySummary = ( accountToDisplay ) => {
   // console.log( totalInterestEarned );
 
   //add the values to the DOM
-  labelSumIn.innerText = `${ totalDeposits.toFixed( 2 ) }€`;
-  labelSumOut.innerText = `${ totalWithdrawals.toFixed( 2 ) }€`;
-  labelSumInterest.innerText = `${ totalInterestEarned.toFixed( 2 ) }€`;
-
+  labelSumIn.innerText = `${formatCurrencies(totalDeposits, accountToDisplay.locale, accountToDisplay.currency)}`;
+  labelSumOut.innerText = `${formatCurrencies(totalWithdrawals, accountToDisplay.locale, accountToDisplay.currency)}`;
+  labelSumInterest.innerText = `${formatCurrencies(totalInterestEarned, accountToDisplay.locale, accountToDisplay.currency)}`;
 };
 
 
@@ -204,12 +205,13 @@ const calcDisplaySummary = ( accountToDisplay ) => {
 const createUserName = ( accs ) => {
   //loop over each of the account and add the userName property to the account, in this case the four account, userName as initials of the acc.Owner
   accs.forEach( ( acc ) => {
+    //adding the userName prop to each account
     acc.userName = acc.owner.toLocaleLowerCase().split( ' ' ).map( name => name[ 0 ] ).join( '' );
     // console.log(acc);
   } );
 };
 
-//pass in the accounts as the argument
+//pass in the accounts array as the argument
 createUserName( accounts );
 
 
