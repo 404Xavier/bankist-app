@@ -87,11 +87,15 @@ const timeNow = () => {
   //GET  the hours
   let hrs = `${ dateNow.getHours() }`.padStart( 2, 0 );
   let min = `${ dateNow.getMinutes() }`.padStart( 2, 0 );
-  
-  let timeNow = `${ day }/${ month }/${ year }, ${ hrs }:${ min }`;
+  let sec = `${ dateNow.getSeconds() }`.padStart( 2, 0 );
+
+  let timeNow = `${ day }/${ month }/${ year }, ${ hrs }:${ min }:${sec}`;
   return timeNow;
 }
 
+
+//first set it to the current time before calling the setInterval
+labelDate.innerText = timeNow();
 //update the timeNow in the label date every one second
 setInterval( () => {
   labelDate.innerText = timeNow();
