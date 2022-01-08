@@ -10,7 +10,7 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'John Ndegwa',
   movements: [ 200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300 ],
   interestRate: 1.2, // %
   pin: 1111,
@@ -23,14 +23,14 @@ const account1 = {
     '2020-05-08T14:11:59.604Z',
     '2020-05-27T17:01:17.194Z',
     '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2022-01-07T10:51:36.790Z',
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: 'USD',
+  locale: 'en-US', // de-DE
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: 'Jessica Mpepesi',
   movements: [ 5000, 3400, -150, -790, -3210, -1000, 8500, -30 ],
   interestRate: 1.5,
   pin: 2222,
@@ -45,8 +45,8 @@ const account2 = {
     '2020-06-25T18:49:59.371Z',
     '2020-07-26T12:01:20.894Z',
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: 'SAR',
+  locale: 'en-GB',
 };
 
 const accounts = [ account1, account2 ];
@@ -79,27 +79,27 @@ const inputClosePin = document.querySelector( '.form__input--pin' );
 
 
 //Getting the date and time to show, as the current date and time;
-const timeNow = () => {
-  const dateNow = new Date();
-  let year = dateNow.getFullYear();
-  let month = `${ dateNow.getMonth() + 1 }`.padStart( 2, 0 );
-  let day = `${ dateNow.getDate() }`.padStart( 2, 0 );
-  //GET  the hours
-  let hrs = `${ dateNow.getHours() }`.padStart( 2, 0 );
-  let min = `${ dateNow.getMinutes() }`.padStart( 2, 0 );
-  let sec = `${ dateNow.getSeconds() }`.padStart( 2, 0 );
 
-  let timeNow = `${ day }/${ month }/${ year }, ${ hrs }:${ min }:${sec}`;
-  return timeNow;
-}
+//Format movemnets date function
+const formatMovementsDate = ( date, locale ) => {
+  const calcDayPassed = ( date1, date2 ) => {
+    const daysPassed = Math.round( Math.abs( date2 - date1 ) / ( 24 * 60 * 60 * 1000 ) );
+    return daysPassed;
+  };
+  //set the number of days passed
+  const daysPassed = calcDayPassed( date, new Date() );
+  //check the days passed
+  if ( daysPassed === 0 ) return 'Today';
+  if ( daysPassed === 1 ) return 'Yesterday';
+  if ( daysPassed <= 7 ) return `${ daysPassed } days ago`;
+
+  return new Intl.DateTimeFormat( locale ).format( date );
+};
 
 
-//first set it to the current time before calling the setInterval
-labelDate.innerText = timeNow();
-//update the timeNow in the label date every one second
-setInterval( () => {
-  labelDate.innerText = timeNow();
-}, 1000 );
+
+
+
 
 
 /**Deleted all the projects before in the script for array methods */
@@ -116,7 +116,7 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
   let movs = sorted ? accountToDisplayMovements?.movements.slice().sort( ( a, b ) => a - b ) : accountToDisplayMovements.movements;
 
   //show the movs sorted or unsorrted
-  console.log( movs );
+  // console.log( movs );
 
   movs.forEach( ( mov, idx ) => {
     // console.log( mov, idx );
@@ -124,17 +124,15 @@ const displayMovements = ( accountToDisplayMovements, sorted = false ) => {
     const movType = mov > 0 ? 'deposit' : 'withdrawal';
     //set the date 
     let dateOfMovement = new Date( accountToDisplayMovements.movementsDates[ idx ] );
-    console.log( dateOfMovement );
-    let year = dateOfMovement.getFullYear();
-    let month = `${ dateOfMovement.getMonth() + 1 }`.padStart( 2, 0 );
-    let day = `${ dateOfMovement.getDate() }`.padStart( 2, 0 );
-    let dateFormatted = `${ day }/${ month }/${ year }`;
+    // console.log( dateOfMovement );
+    // DELTE DATE
+    const formattedDate = formatMovementsDate( dateOfMovement, accountToDisplayMovements.locale );
 
     //create the movemet row
     const movementRowHTML = `
       <div class="movements__row">
-            <div class="movements__type movements__type--${ movType }">${ idx } ${ movType }</div>
-            <div class="movements__date">${ dateFormatted }</div>
+            <div class="movements__type movements__type--${ movType }">${ idx + 1 } ${ movType }</div>
+          <div class="movements__date">${ formattedDate }</div> 
             <div class="movements__value">${ mov.toFixed( 2 ) } EUR€</div>
       </div>
     `;
@@ -235,7 +233,7 @@ const findAccountToLogin = ( accountsToFindFrom ) => {
 
 //set a temporaly variable, which keep track of the account
 let accountLoggedIn;
-//Fake the Login ***********************************************
+// //Fake the Login ***********************************************
 accountLoggedIn = account1;
 updateUI( accountLoggedIn );
 containerApp.style.opacity = 100;
@@ -261,6 +259,22 @@ btnLogin.addEventListener( 'click', e => {
     //make the text bold
     labelWelcome.style.fontWeight = 'bolder';
 
+
+    //display the date
+    //An option object for the DateTimeFormat(locale, optionsObject)
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long'
+    };
+
+    //Get the current time
+    const timeNow = new Date();
+    //update the date
+    labelDate.innerText = new Intl.DateTimeFormat( navigator.language, options ).format( timeNow );
 
     //Update the UI for the account Logged In
     updateUI( accountLoggedIn );
