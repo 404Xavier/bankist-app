@@ -97,7 +97,17 @@ const formatMovementsDate = ( date, locale ) => {
 };
 
 
+//iMPLEMENT THE FUNCTION TO format the currencies
+const formatCurrencies = ( value, locale, currency ) => {
+  return new Intl.NumberFormat( locale,
+    {
+      style: 'currency',
+      currency: currency
+    } ).format(value);
+}
 
+//TESTING THE FUNCTION
+// console.log(formatCurrencies(200000, 'en-US', 'KSH'));
 
 
 
