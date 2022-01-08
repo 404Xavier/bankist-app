@@ -427,3 +427,25 @@ const acc1Movements = account1.movements;
 //   if ( a > b ) return -1;
 //   if ( a < b ) return 1;
 // }));
+
+
+/***
+ * Internationalization of Numbers
+ */
+//An option for formatting the number
+const formatNums = {
+  style: 'currency',
+  unit: 'celsius',
+  currency: 'USD'
+};
+
+let num = 3000000;
+let formattedNumUS = new Intl.NumberFormat( 'en-US', formatNums ).format( num );
+let formattedNumUK = new Intl.NumberFormat( 'en-US', {
+  style: 'currency',
+  unit: 'celsius',
+  useGrouping: false,
+  currency: 'EUR',
+} ).format( num );
+console.log( formattedNumUS ); //3,000,000
+console.log( formattedNumUK ); //3,000,000
