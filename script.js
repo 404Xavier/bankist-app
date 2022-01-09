@@ -162,7 +162,7 @@ const calcDisplayBalance = ( accToDisplayBalance ) => {
   //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${formatCurrencies(balanceToDisplay, accToDisplayBalance.locale, accToDisplayBalance.currency) }`;
+  labelBalance.innerText = `${ formatCurrencies( balanceToDisplay, accToDisplayBalance.locale, accToDisplayBalance.currency ) }`;
 };
 
 
@@ -191,9 +191,9 @@ const calcDisplaySummary = ( accountToDisplay ) => {
   // console.log( totalInterestEarned );
 
   //add the values to the DOM
-  labelSumIn.innerText = `${formatCurrencies(totalDeposits, accountToDisplay.locale, accountToDisplay.currency)}`;
-  labelSumOut.innerText = `${formatCurrencies(totalWithdrawals, accountToDisplay.locale, accountToDisplay.currency)}`;
-  labelSumInterest.innerText = `${formatCurrencies(totalInterestEarned, accountToDisplay.locale, accountToDisplay.currency)}`;
+  labelSumIn.innerText = `${ formatCurrencies( totalDeposits, accountToDisplay.locale, accountToDisplay.currency ) }`;
+  labelSumOut.innerText = `${ formatCurrencies( totalWithdrawals, accountToDisplay.locale, accountToDisplay.currency ) }`;
+  labelSumInterest.innerText = `${ formatCurrencies( totalInterestEarned, accountToDisplay.locale, accountToDisplay.currency ) }`;
 };
 
 
@@ -439,3 +439,8 @@ const acc1Movements = account1.movements;
 //   if ( a > b ) return -1;
 //   if ( a < b ) return 1;
 // }));
+
+
+/***
+ * USING setTimeout and setInterval 
+ */
