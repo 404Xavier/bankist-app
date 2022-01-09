@@ -339,8 +339,8 @@ btnLoan.addEventListener( 'click', e => {
 btnTransfer.addEventListener( 'click', e => {
   //stop the default submission
   e.preventDefault();
-
-  //get the account to transfer to
+  setTimeout( () => {
+    //get the account to transfer to
   const amountToTransfer = Math.floor( inputTransferAmount.value );
   const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
 
@@ -374,6 +374,8 @@ btnTransfer.addEventListener( 'click', e => {
   } else {
     console.log( 'The transaction was not executed' );
   }
+  }, 3000)
+  
 } );
 
 
