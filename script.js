@@ -109,7 +109,10 @@ const formatCurrencies = ( value, locale, currency ) => {
 //TESTING THE FUNCTION
 // console.log(formatCurrencies(200000, 'en-US', 'KSH'));
 
-
+/**
+ * 
+ Implement the startLogOutTimer function
+ */
 
 
 /**Deleted all the projects before in the script for array methods */
