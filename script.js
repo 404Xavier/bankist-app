@@ -162,7 +162,7 @@ const calcDisplayBalance = ( accToDisplayBalance ) => {
   //add the balance to the account
   accToDisplayBalance.balance = balanceToDisplay;
   //render the balance to the DOM
-  labelBalance.innerText = `${formatCurrencies(balanceToDisplay, accToDisplayBalance.locale, accToDisplayBalance.currency) }`;
+  labelBalance.innerText = `${ formatCurrencies( balanceToDisplay, accToDisplayBalance.locale, accToDisplayBalance.currency ) }`;
 };
 
 
@@ -191,9 +191,9 @@ const calcDisplaySummary = ( accountToDisplay ) => {
   // console.log( totalInterestEarned );
 
   //add the values to the DOM
-  labelSumIn.innerText = `${formatCurrencies(totalDeposits, accountToDisplay.locale, accountToDisplay.currency)}`;
-  labelSumOut.innerText = `${formatCurrencies(totalWithdrawals, accountToDisplay.locale, accountToDisplay.currency)}`;
-  labelSumInterest.innerText = `${formatCurrencies(totalInterestEarned, accountToDisplay.locale, accountToDisplay.currency)}`;
+  labelSumIn.innerText = `${ formatCurrencies( totalDeposits, accountToDisplay.locale, accountToDisplay.currency ) }`;
+  labelSumOut.innerText = `${ formatCurrencies( totalWithdrawals, accountToDisplay.locale, accountToDisplay.currency ) }`;
+  labelSumInterest.innerText = `${ formatCurrencies( totalInterestEarned, accountToDisplay.locale, accountToDisplay.currency ) }`;
 };
 
 
@@ -314,24 +314,30 @@ btnLogin.addEventListener( 'click', e => {
 //Implementing the requestLOan
 btnLoan.addEventListener( 'click', e => {
   e.preventDefault();
-  //get the amount of loan requested and floor it
-  const loanRequestAmount = Math.floor( inputLoanAmount.value );
-  //check if the any of the deposits is greater than 10%
-  const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
+  //clear the input
 
-  // console.log(amountRequestedGreaterThan10Percent);
+  setTimeout( () => {
+    //get the amount of loan requested and floor it
+    const loanRequestAmount = Math.floor( inputLoanAmount.value );
+    //check if the any of the deposits is greater than 10%
+    const amountRequestedGreaterThan10Percent = accountLoggedIn.movements.filter( mov => mov > 0 ).some( mov => mov > loanRequestAmount * 0.1 );
 
-  //check if the details for the loan are correct
-  if ( loanRequestAmount && accountLoggedIn && amountRequestedGreaterThan10Percent ) {
-    //push the amount of loan into the requested amount
-    accountLoggedIn.movements.push( loanRequestAmount );
-    // console.log( accountLoggedIn.movements );
-    //push date to the movements
-    accountLoggedIn.movementsDates.push( new Date().toISOString() );
+    // console.log(amountRequestedGreaterThan10Percent);
 
-    //update the UI after pushing the loan as a deposit
-    updateUI( accountLoggedIn );
-  }
+    //check if the details for the loan are correct
+    if ( loanRequestAmount && accountLoggedIn && amountRequestedGreaterThan10Percent ) {
+      //push the amount of loan into the requested amount
+      accountLoggedIn.movements.push( loanRequestAmount );
+      // console.log( accountLoggedIn.movements );
+      //push date to the movements
+      accountLoggedIn.movementsDates.push( new Date().toISOString() );
+
+      //update the UI after pushing the loan as a deposit
+      updateUI( accountLoggedIn );
+      // clear the input
+      inputLoanAmount.value = '';
+    }
+  }, 2500 );
 
 } );
 
@@ -341,41 +347,41 @@ btnTransfer.addEventListener( 'click', e => {
   e.preventDefault();
   setTimeout( () => {
     //get the account to transfer to
-  const amountToTransfer = Math.floor( inputTransferAmount.value );
-  const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
+    const amountToTransfer = Math.floor( inputTransferAmount.value );
+    const accToTransferTo = accounts.find( acc => acc.userName === inputTransferTo.value );
 
-  // console.log( accToTransferTo );
-  // console.log( amountToTransfer );
+    // console.log( accToTransferTo );
+    // console.log( amountToTransfer );
 
-  //check if the amountToTransfer is greater than 0, less than the account's balance, the receiverAccount exists and the accountToTransferTo is not the account logged in
-  if ( amountToTransfer > 0 &&
-    accToTransferTo &&
-    amountToTransfer <= accountLoggedIn.balance &&
-    accToTransferTo?.userName !== accountLoggedIn.userName ) {
-    //execute the transfert
-    //add a negative movemnet to the currentAccount
-    accountLoggedIn.movements.push( -amountToTransfer );
-    //push the date
-    accountLoggedIn.movementsDates.push( new Date().toISOString() );
+    //check if the amountToTransfer is greater than 0, less than the account's balance, the receiverAccount exists and the accountToTransferTo is not the account logged in
+    if ( amountToTransfer > 0 &&
+      accToTransferTo &&
+      amountToTransfer <= accountLoggedIn.balance &&
+      accToTransferTo?.userName !== accountLoggedIn.userName ) {
+      //execute the transfert
+      //add a negative movemnet to the currentAccount
+      accountLoggedIn.movements.push( -amountToTransfer );
+      //push the date
+      accountLoggedIn.movementsDates.push( new Date().toISOString() );
 
-    // console.log( accountLoggedIn.movements );
-    //add a positive movement to the receiving account
-    accToTransferTo.movements.push( amountToTransfer );
-    // console.log(accToTransferTo.movements);
-    //add the transfer to 
-    accToTransferTo.movementsDates.push( new Date().toISOString() );
+      // console.log( accountLoggedIn.movements );
+      //add a positive movement to the receiving account
+      accToTransferTo.movements.push( amountToTransfer );
+      // console.log(accToTransferTo.movements);
+      //add the transfer to 
+      accToTransferTo.movementsDates.push( new Date().toISOString() );
 
-    //update the User Interface
-    updateUI( accountLoggedIn );
+      //update the User Interface
+      updateUI( accountLoggedIn );
 
-    //clear the inputs after transfer
-    inputTransferAmount.value = inputTransferTo.value = '';
+      //clear the inputs after transfer
+      inputTransferAmount.value = inputTransferTo.value = '';
 
-  } else {
-    console.log( 'The transaction was not executed' );
-  }
-  }, 3000)
-  
+    } else {
+      console.log( 'The transaction was not executed' );
+    }
+  }, 3000 );
+
 } );
 
 
